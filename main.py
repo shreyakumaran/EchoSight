@@ -1,5 +1,11 @@
 import cv2
 import numpy as np
+import pyttsx3
+
+# Initialize text-to-speech engine
+engine = pyttsx3.init()
+engine.setProperty('rate', 150)  # Adjust the speaking rate
+engine.setProperty('volume', 1.0)  # Set volume level (0.0 to 1.0)
 
 # Load YOLOv4-Tiny weights and config
 net = cv2.dnn.readNet("yolov4-tiny.weights", "yolov4-tiny.cfg")
@@ -13,6 +19,9 @@ with open("coco.names", "r") as f:
 # Initialize webcam
 cap = cv2.VideoCapture(0)
 
+# Keep track of spoken labels to avoid repetition
+spoken_labels = set()
+
 while True:
     ret, frame = cap.read()
     if not ret:
@@ -25,6 +34,7 @@ while True:
     detections = net.forward(output_layers)
 
     # Process detections
+    current_frame_labels = set()
     for output in detections:
         for detection in output:
             scores = detection[5:]
@@ -42,8 +52,18 @@ while True:
                 y = int(center_y - h / 2)
 
                 label = f"{classes[class_id]}: {int(confidence * 100)}%"
+                current_frame_labels.add(classes[class_id])  # Add to current frame labels
                 cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
                 cv2.putText(frame, label, (x, y - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
+
+    # Provide audio feedback for new labels
+    new_labels = current_frame_labels - spoken_labels
+    for label in new_labels:
+        engine.say(f"Detected {label}")
+        engine.runAndWait()
+
+    # Update spoken labels
+    spoken_labels.update(new_labels)
 
     # Display output
     cv2.imshow("Echo Sight - YOLOv4-Tiny", frame)
