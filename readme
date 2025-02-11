@@ -1,1 +1,47 @@
-Initial commit
+# Overview
+EchoSight is an **AI-driven assistive technology** that enhances navigation and safety for visually impaired individuals. 
+Integrating **face recognition, object detection, and obstacle sensing**converts visual information into **real-time audio feedback**, making the environment more accessible.
+
+
+# Features
+
+* **Real-time Image Capture** – Captures frames using **ESP32-CAM**.(Uses Laptop Web-Cam for now) 
+
+* **Face Recognition** – Identifies known faces using **Dlib**. 
+
+* **Object Detection** – Utilizes **YOLOv4-Tiny** for object identification.
+
+*  **Obstacle Detection** – Detects nearby obstacles using an **Ultrasonic Sensor**.
+
+* **Audio Feedback** – Converts detected information into **speech output** via **Python Text-to-Speech (PYTTX3)**.
+
+
+# Requirements
+
+## Hardware Requirements
+
+* **ESP32-CAM** – Captures images for processing.
+
+* **NodeMCU ESP8266** – Handles communication and processing.
+
+* **Ultrasonic Sensor (HC-SR04)** – Detects obstacles within **2 meters**.
+
+* **Voltage Divider** – Ensures compatibility between components .
+
+*  **Portable Battery Pack** – Powers the system.
+
+## Software Requirements
+
+* **Python 3.8+**  
+
+* **OpenCV** – Image processing  
+
+* **Dlib** – Face recognition  
+
+* **YOLOv4-Tiny** – Object detection  
+
+* **Pyttsx3** – Text-to-Speech engine  
+
+* **Arduino IDE** – For flashing firmware onto **NodeMCU ESP8266**  
+
+* **Firmware Libraries:** ESP32-CAM support, WiFi libraries  
